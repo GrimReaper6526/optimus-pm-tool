@@ -1,0 +1,146 @@
+# Secure Vercel Deployment Plan & Tech Stack Documentation
+
+This plan outlines deploying both the React Frontend and the Node/Express Backend on **Vercel** as two separate projects, keeping our secrets secure and ensuring smooth routing fallback for single-page app (SPA) URL paths.
+
+---
+
+## 1. Project Tech Stack
+
+The application is built as a modern, premium MERN (MongoDB, Express, React, Node) stack project.
+
+```mermaid
+graph TD
+    Client[React Frontend / Vite] -->|API Requests| Server[Node/Express Backend]
+    Server -->|Mongoose ODM| DB[(MongoDB Atlas Cloud)]
+    Client -->|Icons| Lucide[Lucide React Icons]
+    Client -->|State Management| Zustand[Zustand Store]
+    Server -->|Security & Auth| JWT[JWT / Cookies]
+```
+
+### Frontend (Client)
+* **Core:** React 19, JavaScript (ES6+), Vite (Build Tool & Dev Server).
+* **Styling:** Vanilla CSS & Tailwind CSS v3 (configured with theme variables matching system palettes).
+* **State Management:** Zustand (lightweight, reactive global store).
+* **Routing:** React Router DOM v7 (handles client-side routes like `/`, `/dashboard`, `/profile`).
+* **Icons:** Lucide React.
+* **Componentry & UX:** Glassmorphism UI cards, custom modal overlays, custom SVG analytic charts, and `react-hot-toast` notifications.
+
+### Backend (Server)
+* **Runtime:** Node.js, Express.js.
+* **Database Access:** Mongoose ODM (Object Document Mapper).
+* **Authentication:** JSON Web Tokens (JWT) for access validation, stored in-memory, paired with HTTP-Only secure Cookies for long-lived refresh tokens.
+* **Validation:** Zod (schema validation for registrations, logins, and profile updates).
+* **Rate Limiting:** Express Rate Limit (configured to protect authentications and general endpoints).
+
+### Database (Data Store)
+* **Provider:** MongoDB Atlas (fully-managed database cloud service).
+* **Features:** Optimized compound single-field indexes for board queries and activity feeds.
+
+---
+
+## 2. Deployment Architecture (All Vercel)
+
+We will deploy the frontend and backend as **two separate Vercel projects** to manage separate environment variables, domains, and builds.
+
+```mermaid
+graph LR
+    User((User)) -->|HTTPS| Frontend[Vercel Frontend Project <br/> Static Host]
+    Frontend -->|HTTP-Only Cookie / CORS| Backend[Vercel Backend Project <br/> Serverless Functions]
+    Backend -->|Auth Connection| MongoDB[(MongoDB Atlas)]
+```
+
+### Vercel Project Breakdown:
+1. **`optimus-client` (Frontend):** Builds from the `client/` subdirectory. Configured to route all client subpaths to `index.html` (SPA mode).
+2. **`optimus-server` (Backend):** Builds from the `server/` subdirectory using Vercel's Node.js Serverless runtime (`@vercel/node`).
+
+---
+
+## 3. Proposed Changes
+
+### 1. Server Configuration (Vercel Serverless Setup)
+
+#### [MODIFY] [server/src/app.js](file:///c:/Users/Grim%20Reaper/Desktop/OptimusAutomate_PMTool/server/src/app.js)
+* Export `app` so Vercel can load the Express listener.
+* Prevent starting the local listener using `app.listen()` when running inside Vercel's serverless environment (checking `process.env.VERCEL`):
+  ```javascript
+  const PORT = process.env.PORT || 5000;
+  if (process.env.VERCEL !== '1') {
+    app.listen(PORT, () => {
+      console.log(`✅ Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+    });
+  }
+
+  export default app;
+  ```
+
+#### [NEW] [server/vercel.json](file:///c:/Users/Grim%20Reaper/Desktop/OptimusAutomate_PMTool/server/vercel.json)
+* Define the build configuration to route all incoming backend requests to the Express entry point `src/app.js` using `@vercel/node`:
+  ```json
+  {
+    "version": 2,
+    "builds": [
+      {
+        "src": "src/app.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "src/app.js"
+      }
+    ]
+  }
+  ```
+
+---
+
+### 2. Client Configuration (Vercel Routing Rules)
+
+#### [NEW] [client/vercel.json](file:///c:/Users/Grim%20Reaper/Desktop/OptimusAutomate_PMTool/client/vercel.json)
+* Add SPA route rewrites to prevent `404 Not Found` errors when refreshing pages like `/dashboard` or `/profile`:
+  ```json
+  {
+    "cleanUrls": true,
+    "rewrites": [
+      {
+        "source": "/(.*)",
+        "destination": "/index.html"
+      }
+    ]
+  }
+  ```
+
+---
+
+## 4. Cloud Deployment Setup Steps
+
+### 1. Backend Deployment (on Vercel)
+* Go to the Vercel dashboard and click **Import Project**.
+* Select the repository, set the project name to your backend's name.
+* In **Root Directory**, select the `server` folder.
+* Configure **Environment Variables** in Vercel settings:
+  * `NODE_ENV=production`
+  * `MONGO_URI` (your MongoDB Atlas connection string)
+  * `JWT_SECRET` (secure random string)
+  * `JWT_REFRESH_SECRET` (secure random string)
+  * `CLIENT_URL` (the live Vercel URL of your deployed frontend)
+
+### 2. Frontend Deployment (on Vercel)
+* Import the repository again as a separate project.
+* Set the project name to your client's name.
+* In **Root Directory**, select the `client` folder.
+* Verify Vercel automatically detects the Vite framework.
+* Configure **Environment Variables**:
+  * `VITE_API_URL` (pointing to your deployed backend URL, e.g. `https://your-backend-vercel.app/api`)
+
+---
+
+## 5. Verification Plan
+
+### Automated Verification
+* Verify frontend production compilation: `npm run build` in the `client` directory.
+
+### Manual Verification
+* Confirm CORS headers and HTTP-Only cookies are correctly passed between the two Vercel subdomains.
+* Verify page refreshing on direct subpaths (`/dashboard` and `/profile`) routes correctly via Vercel's rewrite rules.
