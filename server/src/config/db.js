@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 export const connectDB = async () => {
   try {
-    const connStr = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/pmtool';
+    const connStr = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/pmtool';
     const conn = await mongoose.connect(connStr);
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
