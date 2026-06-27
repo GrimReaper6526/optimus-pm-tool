@@ -18,9 +18,9 @@ export default function Navbar() {
       <div className="flex items-center gap-3">
         <Link to="/" className="flex items-center gap-2">
           <div className="w-6 h-6 rounded bg-accent-primary flex items-center justify-center">
-            <span className="text-white font-bold text-xs">P</span>
+            <span className="text-white font-bold text-xs">M</span>
           </div>
-          <span className="font-semibold text-text-primary tracking-tight">Optimus PM</span>
+          <span className="font-semibold text-text-primary tracking-tight">Modus</span>
         </Link>
       </div>
 

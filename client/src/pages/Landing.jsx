@@ -54,7 +54,7 @@ export default function Landing() {
       {/* Hero Section */}
       <section className="max-w-4xl mx-auto px-4 pt-16 pb-12 text-center flex flex-col items-center gap-6">
         <Badge variant="accent" className="px-3 py-1 text-xs">
-          Introducing Optimus PM 1.0
+          Introducing Modus 1.0
         </Badge>
         
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-text-primary leading-tight max-w-2xl">
@@ -621,7 +621,7 @@ export default function Landing() {
       <section className="py-16 max-w-5xl mx-auto px-6 w-full">
         <div className="text-center mb-10">
           <h2 className="text-xl font-bold tracking-tight text-text-primary">What developers say</h2>
-          <p className="text-xs text-text-secondary mt-1">Feedback from users building projects with Optimus PM.</p>
+          <p className="text-xs text-text-secondary mt-1">Feedback from users building projects with Modus.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="p-5 flex flex-col justify-between h-36">
@@ -668,7 +668,7 @@ export default function Landing() {
       {/* Footer Section */}
       <footer className="border-t border-border-default bg-page py-6 w-full">
         <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-text-secondary">
-          <p>© {new Date().getFullYear()} Optimus PM. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Modus. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <Link to="/auth" className="hover:text-text-primary transition-colors font-semibold">Sign In</Link>
             <span className="text-text-tertiary">|</span>

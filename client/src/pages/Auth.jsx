@@ -197,9 +197,9 @@ export default function Auth() {
       <div className="hidden md:flex flex-col justify-between p-12 bg-subtle border-r border-border-default select-none">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded bg-accent-primary flex items-center justify-center">
-            <span className="text-white font-bold text-base">P</span>
+            <span className="text-white font-bold text-base">M</span>
           </div>
-          <span className="font-bold text-lg text-text-primary tracking-tight">Optimus PM</span>
+          <span className="font-bold text-lg text-text-primary tracking-tight">Modus</span>
         </div>
 
         <div className="space-y-6 my-auto max-w-md">
@@ -236,7 +236,7 @@ export default function Auth() {
         </div>
 
         <div className="text-[10px] text-text-tertiary">
-          Optimus PM — Created for OptimusAutomate Tracks
+          Modus — Created for OptimusAutomate Tracks
         </div>
       </div>
 
@@ -245,7 +245,7 @@ export default function Auth() {
         <div className="w-full max-w-sm space-y-6">
           <div className="text-center md:text-left">
             <div className="mx-auto md:mx-0 flex h-10 w-10 items-center justify-center rounded-lg bg-accent-primary mb-4 md:hidden">
-              <span className="text-white font-bold text-lg">P</span>
+              <span className="text-white font-bold text-lg">M</span>
             </div>
             <h2 className="text-xl font-bold tracking-tight text-text-primary">
               {isLogin ? 'Sign in to your account' : 'Create a new account'}

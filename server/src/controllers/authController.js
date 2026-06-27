@@ -16,13 +16,13 @@ const loginSchema = z.object({
 const generateTokens = (userId) => {
   const accessToken = jwt.sign(
     { userId },
-    process.env.JWT_SECRET || 'fallback_jwt_secret_pmtool_optimus',
+    process.env.JWT_SECRET || 'fallback_jwt_secret_pmtool_modus',
     { expiresIn: '15m' }
   );
 
   const refreshToken = jwt.sign(
     { userId },
-    process.env.JWT_REFRESH_SECRET || 'fallback_jwt_refresh_secret_pmtool_optimus',
+    process.env.JWT_REFRESH_SECRET || 'fallback_jwt_refresh_secret_pmtool_modus',
     { expiresIn: '7d' }
   );
 
@@ -153,7 +153,7 @@ export const refresh = async (req, res, next) => {
     // Verify token
     let decoded;
     try {
-      decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET || 'fallback_jwt_refresh_secret_pmtool_optimus');
+      decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET || 'fallback_jwt_refresh_secret_pmtool_modus');
     } catch (err) {
       return res.status(401).json({ error: 'Invalid or expired refresh token' });
     }
