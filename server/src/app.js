@@ -1,8 +1,12 @@
 import express from 'express';
+import dns from 'dns';
 import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
+
+// Force Node.js to resolve IPv4 first (fixes MongoDB Atlas timeouts on Vercel)
+dns.setDefaultResultOrder('ipv4first');
 import { connectDB } from './config/db.js';
 import { authRoutes } from './routes/authRoutes.js';
 import { boardRoutes } from './routes/boardRoutes.js';
