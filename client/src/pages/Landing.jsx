@@ -88,7 +88,7 @@ export default function Landing() {
             <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
             <div className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
             <div className="flex-1 bg-page border border-border-default rounded mx-12 h-5 text-[10px] text-text-tertiary flex items-center justify-center">
-              localhost:5173/board/active-sprint-q3
+              https://modus-app-rust.vercel.app/active-sprint-q3
             </div>
           </div>
 
