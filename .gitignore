@@ -47,3 +47,10 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 
+# Local planning and design documents
+Deploy_plan
+PROJECT_SECURITY_CHECKLIST.md
+7_DAY_IMPLEMENTATION_PLAN.md
+UI_DESIGN_SYSTEM_PROMPT.md
+
+
